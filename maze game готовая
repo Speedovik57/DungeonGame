@@ -163,31 +163,27 @@ void PrintMaze(int maze[LY][LX], int sizeX, int sizeY)
 /// Функция определяет валидацию лабиринта
 bool FindFirstPlayerPosition(int maze[LY][LX], int sizeX, int sizeY)
 {
-	int player = 0;
-	int exit = 0;
-	for (int i = 0; i < sizeY; i++) // цикл проверяет массив по строкам
+	int player = 0, finish = 0;
+	for (int i = 0; i < sizeY; i++)  // цикл пробегает массив по строкам
 	{
-		for (int j = 0; j < sizeX; j++) // цикл проверяет массив по столбцам
+		for (int j = 0; j < sizeX; j++) // цикл пробегает массив по столбцам
 		{
-			if (maze[i][j] == 3) // проверяем, есть ли в массиве элемент 3
-			{
+			if (maze[i][j] == 3)    // проверяем, если текущий элемент равен 3 - нашли
+			{                       // требуемую позицию
 				player++;
-				hy = i;
-				hx = j;
+				hx = j;             // записываем столбец в hx
+				hy = i;             // записываем строку в h
 			}
-			if (maze[i][j] == 2) //проверяем есть ли в массиве элемент 2
+			if (maze[i][j] == 3)
 			{
-				exit++;
+				finish++;
 			}
 		}
 	}
-	if (player == 1 && exit >= 1) // если есть один игрок и хотя бы один выход
-
+	if (player == 1 && finish >= 1)
 		return true;
 	else
-		setlocale(LC_ALL, "ru-RU");//русский язык
-	cout << "игра завершена - лабиринт не валиден" << endl; //если лабиринт не валиден
-	return false;
+		return false;
 }
 //Функция скрывает игрока с экрана и убирает его из лабиринта
 void HidePlayer()
