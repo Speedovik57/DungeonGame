@@ -206,106 +206,58 @@ void ShowPlayer()
 	cout << player; // и печатаем образ игрока
 }
 
-// Функция перемещает игрока вверх на одну клетку, если это разрешено
-void GoUp()
+void MovePlayer(int dx, int dy, int& hx, int& hy)
 {
-	if (hy > 0) // проверяем, если текущая позиция игрока > 0 - то перемещаться можно
+	if (hx + dx < LX && hy + dy < LY && hx + dx >= 0 && hy + dy >= 0)
 	{
-		switch (maze[hy - 1][hx]) // проверяем, что находится в ячейке матрицы на строку выше
-		{
-		case 0: // если там пусто, то ход возможен.
-			HidePlayer(); // вызываем функцию, которая скрывает игрока с экрана и убирает из текущей позиции матрицы
-			hy--; // уменьшаем координату y
-			ShowPlayer(); // отображаем игрока в новой позиции
-			break;
-		case 2: // если там дверь выхода
-			HidePlayer(); // по аналогии с вышестоящим кодом перемещаем игрока в новую позицию
-			hy--;
-			ShowPlayer();
-			UpdateScore(score += 500); // добавляем 500 бонусов за достижение выхода из лабиринта
-			gameState = 1; // изменяем статус игры на ВЫИГРЫШ
-			break;
-		case 4: // если там монета
-			HidePlayer(); // по аналогии с вышестоящим кодом перемещаем игрока в новую позицию
-			hy--;
-			ShowPlayer();
-			UpdateScore(score += 100); // добавляем 100 бонусов за сбор монеты
-			break;
-		case 5: // если там алмаз
-			HidePlayer(); // по аналогии с вышестоящим кодом перемещаем игрока в новую позицию
-			hy--;
-			ShowPlayer();
-			UpdateScore(score += 300); // добавляем 300 бонусов за сбор алмаза
-			break;
-		case 6: // если там время
-			HidePlayer(); // по аналогии с вышестоящим кодом перемещаем игрока в новую позицию
-			hy--;
-			ShowPlayer();
-			timeLimit += 10; // добавляем 10 секунд за сбор времени
-			break;
-		case 7: // если там мина
-			HidePlayer(); // по аналогии с вышестоящим кодом перемещаем игрока в новую позицию
-			hy--;
-			ShowPlayer();
-			timeLimit -= 8; // отнимает 200 бонусов за сбор мины
-			break;
-		case 8: // если там мина
-			HidePlayer(); // по аналогии с вышестоящим кодом перемещаем игрока в новую позицию
-			hy--;
-			ShowPlayer();
-			timeLimit -= 8; //убавляем 8 секунд времени за сбор времени
-
-		}
-	}
-
-}
-
-// Функция перемещает игрока вниз на одну клетку, если это разрешено
-void GoDown()
-{
-	if (hy < LY - 1)
-	{
-		switch (maze[hy + 1][hx])
+		switch (maze[hy + dy][hx + dx])
 		{
 		case 0:
 			HidePlayer();
-			hy++;
+			hy += dy;
+			hx += dx;
 			ShowPlayer();
 			break;
 		case 2:
 			HidePlayer();
-			hy++;
+			hy += dy;
+			hx += dx;
 			ShowPlayer();
 			UpdateScore(score += 500);
 			gameState = 1;
 			break;
 		case 4:
 			HidePlayer();
-			hy++;
+			hy += dy;
+			hx += dx;
 			ShowPlayer();
 			UpdateScore(score += 100);
 			break;
 		case 5:
 			HidePlayer();
-			hy++;
+			hy += dy;
+			hx += dx;
 			ShowPlayer();
 			UpdateScore(score += 300);
 			break;
 		case 6:
 			HidePlayer();
-			hy++;
+			hy += dy;
+			hx += dx;
 			ShowPlayer();
 			timeLimit += 10;
 			break;
 		case 7:
 			HidePlayer();
-			hy++;
+			hy += dy;
+			hx += dx;
 			ShowPlayer();
 			UpdateScore(score -= 200);
 			break;
 		case 8:
 			HidePlayer();
-			hy++;
+			hy += dy;
+			hx += dx;
 			ShowPlayer();
 			timeLimit -= 8;
 			break;
@@ -313,111 +265,6 @@ void GoDown()
 	}
 }
 
-// Функция перемещает игрока вправо на одну клетку, если это разрешено
-void GoRight()
-{
-	if (hx < LX - 1)
-	{
-		switch (maze[hy][hx + 1])
-		{
-		case 0:
-			HidePlayer();
-			hx++;
-			ShowPlayer();
-			break;
-		case 2:
-			HidePlayer();
-			hx++;
-			ShowPlayer();
-			UpdateScore(score += 500);
-			gameState = 1;
-			break;
-		case 4:
-			HidePlayer();
-			hx++;
-			ShowPlayer();
-			UpdateScore(score += 100);
-			break;
-		case 5:
-			HidePlayer();
-			hx++;
-			ShowPlayer();
-			UpdateScore(score += 300);
-			break;
-		case 6:
-			HidePlayer();
-			hx++;
-			ShowPlayer();
-			timeLimit += 10;
-			break;
-		case 7:
-			HidePlayer();
-			hx++;
-			ShowPlayer();
-			UpdateScore(score -= 200);
-			break;
-		case 8:
-			HidePlayer();
-			hx++;
-			ShowPlayer();
-			timeLimit -= 8;
-			break;
-		}
-	}
-}
-
-//// Функция перемещает игрока влево на одну клетку, если это разрешено
-void GoLeft()
-{
-	if (hx > 0)
-	{
-		switch (maze[hy][hx - 1])
-		{
-		case 0:
-			HidePlayer();
-			hx--;
-			ShowPlayer();
-			break;
-		case 2:
-			HidePlayer();
-			hx--;
-			ShowPlayer();
-			UpdateScore(score += 500);
-			gameState = 1;
-			break;
-		case 4:
-			HidePlayer();
-			hx--;
-			ShowPlayer();
-			UpdateScore(score += 100);
-			break;
-		case 5:
-			HidePlayer();
-			hx--;
-			ShowPlayer();
-			UpdateScore(score += 300);
-			break;
-		case 6:
-			HidePlayer();
-			hx--;
-			ShowPlayer();
-			timeLimit += 10;
-			break;
-		case 7:
-			HidePlayer();
-			hx--;
-			ShowPlayer();
-			UpdateScore(score -= 200);
-			break;
-		case 8:
-			HidePlayer();
-			hx--;
-			ShowPlayer();
-			timeLimit -= 8;
-			break;
-		}
-	}
-}
 void ShowOverMessage()
 {
 	setlocale(LC_ALL, "ru-RU");
@@ -454,18 +301,18 @@ void Control()
 			if (x == 0xe0) // если это символ с кодом 0xE0 (шестнадцатеричное)
 				switch (_getch()) // то считываем еще один символ (некоторые клавиши выдают двойные коды)
 				{
-				case 72: // если 2-й символ код 72, то это клавиша курсор вверх
-					GoUp(); // идем вверх
+				case 72:          // если 2-й символ код 72, то это клавиша курсор вверх
+					MovePlayer(0, -1, hx, hy);       // идем вверх
 					break;
-				case 80: // если 2-й символ код 80, то это клавиша курсор вниз
-					GoDown(); // идем вниз
+				case 80:          // если 2-й символ код 80, то это клавиша курсор вниз
+					MovePlayer(0, 1, hx, hy);   // идем вниз
 					break;
-				case 75: // если 2-й символ код 75, то это клавиша курсор влево
-					GoLeft(); // идем влево
+				case 75:        // если 2-й символ код 75, то это клавиша курсор влево
+					MovePlayer(-1, 0, hx, hy);   // идем влево
 					break;
 				case 77:
-					GoRight(); // если 2 - й символ код 77, то это клавиша курсор вправо
-					break; // идем вправо
+					MovePlayer(1, 0, hx, hy);  // если 2 - й символ код 77, то это клавиша курсор вправо
+					break;      // идем вправо
 				}
 		}
 		Sleep(200); // останавливаем игру на 200 мсек, если этого не делать, то
